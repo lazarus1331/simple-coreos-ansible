@@ -1,0 +1,23 @@
+---
+- name: Install container gitlab
+  hosts: all
+  tags:
+    - install
+  tasks:
+    - include: containers/gitlab.yml cstate=started
+
+- name: Update and reload container gitlab
+  hosts: all
+  tags:
+    - update 
+  tasks:
+    - include: containers/gitlab.yml cstate=reloaded
+
+- name: Remove container gitlab
+  hosts: all
+  tags:
+    - remove 
+  tasks:
+    - include: containers/gitlab.yml cstate=absent
+
+

@@ -1,0 +1,21 @@
+---
+- name: "Pull Gitlab docker image and manage it with action {{cstate}}"
+  docker:
+    state: "{{cstate}}"
+    name: "gitlab"
+    image: "gitlab/gitlab-ce:latest"
+    pull: always
+    restart_policy: always
+    hostname: "gitlab.mydomain.net"
+    ports:
+        - "443:443"
+        - "80:80"
+        - "22:22"
+    volumes:
+      - "/data/gitlab/config:/etc/gitlab"
+      - "/data/gitlab/logs:/var/log/gitlab"
+      - "/data/gitlab/data:/var/opt/gitlab"
+#    env:
+#      GITLAB_OMNIBUS_CONFIG: "external_url 'http://my.domain.com/'; gitlab_rails['lfs_enabled'] = true;"
+
+# src: https://github.com/gitlabhq/gitlabhq.git

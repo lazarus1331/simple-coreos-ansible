@@ -1,0 +1,22 @@
+---
+#vars:
+#  dbname: dbname
+#  dbusers:
+#  - dbuser
+#  dbpassword: dbsecretpassword
+- name: ensure users are deleted before database
+  postgresql_user: state={{dstate}} db={{dbname}} name={{dbuser}} password={{dbpassword}} priv=ALL
+  become: true
+  become_user: postgres
+  when: dstate == 'absent'
+
+- name: ensure database is created
+  postgresql_db: state={{dstate}} name={{dbname}}
+  become: true
+  become_user: postgres
+
+- name: ensure user has access to database
+  postgresql_user: state={{dstate}} db={{dbname}} name={{dbuser}} password={{dbpassword}} priv=ALL
+  become: true
+  become_user: postgres
+  when: dstate == 'present'

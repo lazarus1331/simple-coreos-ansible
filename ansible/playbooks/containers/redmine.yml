@@ -1,0 +1,21 @@
+---
+- name: "Pull Redmine docker image and manage it with action {{cstate}}"
+  docker:
+    state: "{{cstate}}"
+    name: "redmine"
+    image: "sameersbn/redmine:latest"
+    pull: always
+    restart_policy: always
+    hostname: "redmine.mydomain.net"
+    ports:
+        - "{{redmineport}}:80"
+    volumes:
+      - "/data/redmine:/home/redmine/data"
+    env:
+      DB_ADAPTER: postgresql
+      DB_HOST: "{{redminedbhost}}"
+      DB_NAME: "{{redminedbname}}"
+      DB_USER: "{{redminedbuser}}"
+      DB_PASS: "{{redminedbpass}}"
+
+# src: https://github.com/sameersbn/docker-redmine.git

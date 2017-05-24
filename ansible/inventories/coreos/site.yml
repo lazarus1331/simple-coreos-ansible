@@ -1,0 +1,26 @@
+# This playbook deploys the whole application stack in this site.  
+
+- name: Create databases on dbserver
+  hosts: dbserver
+  tags:
+    - dbserver
+  tasks:
+    - include: ../../playbooks/databases/createdb.yml dstate=present dbname={{gitlabdbname}} dbuser={{gitlabdbuser}} dbpassword={{gitlabdbpass}} 
+    - include: ../../playbooks/databases/createdb.yml dstate=present dbname={{redminedbname}} dbuser={{redminedbuser}} dbpassword={{redminedbpass}} 
+
+- name: bootstrap coreos with python
+  hosts: coreos
+  remote_user: core 
+  tags: 
+    - coreos
+  roles:
+    - ansible-coreos-bootstrap
+
+- name: Install dockerhost containers gitlab, nginx
+  hosts: dockerhost
+  tags:
+    - dockerhost
+  tasks:
+    - include: ../../playbooks/containers/gitlab.yml cstate=started
+    - include: ../../playbooks/containers/redmine.yml cstate=started
+

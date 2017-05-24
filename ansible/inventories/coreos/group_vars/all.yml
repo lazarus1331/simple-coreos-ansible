@@ -1,0 +1,6 @@
+---
+redminedbhost: 192.168.1.10
+redminedbname: redmine
+redminedbuser: redmineuser
+redminedbpass: redminepass
+redmineport: 8080
